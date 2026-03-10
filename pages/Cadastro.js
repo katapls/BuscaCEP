@@ -9,7 +9,7 @@ import Container from '../componentes/Container';
 
 export default function Cadastro({ onBack }) { // Adicionada a prop onBack
   return (
-    <MyImageBackground source={{ uri: 'https://images.unsplash.com/photo-1557683311-eac922347aa1' }}>
+    <MyImageBackground source={{ uri: 'https://i.pinimg.com/736x/f4/a9/20/f4a920df89961e1c6c2ad5f8e3f3d133.jpg' }}>
       <BaseView style={styles.overlay}>
         
         {/* Botão de Voltar */}
@@ -36,7 +36,7 @@ export default function Cadastro({ onBack }) { // Adicionada a prop onBack
 const styles = StyleSheet.create({
   overlay: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.3)' },
   title: { fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
-  btnSuccess: { backgroundColor: '#28a745', padding: 15, borderRadius: 10, alignItems: 'center' },
+  btnSuccess: { backgroundColor: '#a87d74', padding: 15, borderRadius: 10, alignItems: 'center' },
   btnText: { color: 'white', fontWeight: 'bold' },
   // Estilo da Seta
   backButton: { position: 'absolute', top: 50, left: 20, backgroundColor: 'rgba(255,255,255,0.3)', width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
