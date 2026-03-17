@@ -1,32 +1,53 @@
-import React from 'react';
+import { useState } from 'react';
+import { Alert } from 'react-native';
 import { StyleSheet, View as BaseView } from 'react-native';
-import MyView from '../componentes/View';
 import MyText from '../componentes/Text';
 import MyTextInput from '../componentes/TextInput';
 import MyTouchableOpacity from '../componentes/TouchableOpacity';
 import MyImageBackground from '../componentes/ImageBackground';
 import Container from '../componentes/Container';
 
-export default function Login({ onBack }) { // Adicionada a prop onBack
+export default function Login({ onBack, navigation }) {  
+  const [user, setUser] = useState("");
+  const [pass, setPass] = useState("");
+
+  function logar() {
+    if (user === "" || pass === "") {
+      Alert.alert("ERRO", "Favor preencher todos os campos!");
+    } else if (user === "Bento" && pass === "123") {
+      Alert.alert("Excelsior", "Usuário logado!");
+      navigation.navigate("Cadastro");                  
+    }
+  }
+
   return (
     <MyImageBackground source={{ uri: 'https://img.freepik.com/premium-photo/hyper-realistic-strawberry-wallpaper-with-pink-anime-aesthetic_886588-33728.jpg?w=360' }}>
       <BaseView style={styles.overlay}>
-        
-        {/* Botão de Voltar */}
+
         <MyTouchableOpacity style={styles.backButton} onPress={onBack}>
           <MyText style={styles.backText}>←</MyText>
         </MyTouchableOpacity>
 
         <Container>
           <MyText style={styles.title}>Login</MyText>
-          
-          <MyTextInput placeholder="E-mail" keyboardType="email-address" />
-          <MyTextInput placeholder="Senha" secureTextEntry />
 
-          <MyTouchableOpacity style={styles.btnPrimary}>
+          <MyTextInput
+            placeholder="E-mail"
+            keyboardType="email-address"
+            value={user}
+            onChangeText={setUser}
+          />
+          <MyTextInput
+            placeholder="Senha"
+            secureTextEntry
+            value={pass}
+            onChangeText={setPass}
+          />
+          <MyTouchableOpacity style={styles.btnPrimary} onPress={logar}>
             <MyText style={styles.btnText}>ENTRAR</MyText>
           </MyTouchableOpacity>
         </Container>
+
       </BaseView>
     </MyImageBackground>
   );
@@ -37,7 +58,6 @@ const styles = StyleSheet.create({
   title: { fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
   btnPrimary: { backgroundColor: '#f3b4c7', padding: 15, borderRadius: 10, alignItems: 'center' },
   btnText: { color: 'white', fontWeight: 'bold' },
-  // Estilo da Seta
   backButton: { position: 'absolute', top: 50, left: 20, backgroundColor: 'rgba(255,255,255,0.3)', width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
   backText: { color: 'white', fontSize: 24, fontWeight: 'bold' }
 });

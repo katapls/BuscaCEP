@@ -4,7 +4,7 @@ import { ImageBackground, Image, StyleSheet } from "react-native";
 export default function Splash() {
   return (
     <ImageBackground
-      // Corrigido: para imagens locais na pasta assets, use require
+      
       source={require('../assets/background.jpg')} 
       style={style.imgBack}
     >
@@ -24,7 +24,7 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   imgLogo: {
-    width: 300, // Ajustado para não cortar em telas menores
+    width: 300, 
     height: 200,
   }
 });
