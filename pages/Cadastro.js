@@ -13,29 +13,17 @@ export default function Cadastro({ onBack, navigation }) {
   const [pass, setPass] = useState("");
 
   function cadastrar() {
-    if (nome === "" || email === "" || pass === "") {
-      Alert.alert("ERRO", "Favor preencher todos os campos!");
-    } else if (!email.includes("@")) {
-      Alert.alert("ERRO", "Informe um e-mail válido!");
-    } else if (pass.length < 3) {
-      Alert.alert("ERRO", "A senha deve ter pelo menos 3 caracteres!");
-    } else {
-      Alert.alert("Sucesso", "Conta criada com sucesso!");
-      navigation.navigate("Login");   // ← volta pra tela de login após cadastro
-    }
+    Alert.alert("Sucesso", "Conta criada com sucesso!");
   }
 
   return (
     <MyImageBackground source={{ uri: 'https://i.pinimg.com/736x/f4/a9/20/f4a920df89961e1c6c2ad5f8e3f3d133.jpg' }}>
       <BaseView style={styles.overlay}>
-
         <MyTouchableOpacity style={styles.backButton} onPress={onBack}>
           <MyText style={styles.backText}>←</MyText>
         </MyTouchableOpacity>
-
         <Container>
           <MyText style={styles.title}>Criar Conta</MyText>
-
           <MyTextInput
             placeholder="Nome Completo"
             value={nome}
@@ -57,7 +45,6 @@ export default function Cadastro({ onBack, navigation }) {
             <MyText style={styles.btnText}>CADASTRAR</MyText>
           </MyTouchableOpacity>
         </Container>
-
       </BaseView>
     </MyImageBackground>
   );

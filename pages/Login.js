@@ -12,28 +12,24 @@ export default function Login({ onBack, navigation }) {
   const [pass, setPass] = useState("");
 
   function logar() {
-    if (user === "" || pass === "") {
-      Alert.alert("ERRO", "Favor preencher todos os campos!");
-    } else if (user === "Bento" && pass === "123") {
+    if (user === "Gelo" && pass === "Azul") {
       Alert.alert("Excelsior", "Usuário logado!");
-      navigation.navigate("Cadastro");                  
+    } else {
+      Alert.alert("ERRO", "Usuário ou senha incorretos!");
     }
   }
 
   return (
     <MyImageBackground source={{ uri: 'https://img.freepik.com/premium-photo/hyper-realistic-strawberry-wallpaper-with-pink-anime-aesthetic_886588-33728.jpg?w=360' }}>
       <BaseView style={styles.overlay}>
-
         <MyTouchableOpacity style={styles.backButton} onPress={onBack}>
           <MyText style={styles.backText}>←</MyText>
         </MyTouchableOpacity>
-
         <Container>
           <MyText style={styles.title}>Login</MyText>
-
           <MyTextInput
-            placeholder="E-mail"
-            keyboardType="email-address"
+            placeholder="Nome"
+            keyboardType="Nome"
             value={user}
             onChangeText={setUser}
           />
@@ -47,7 +43,6 @@ export default function Login({ onBack, navigation }) {
             <MyText style={styles.btnText}>ENTRAR</MyText>
           </MyTouchableOpacity>
         </Container>
-
       </BaseView>
     </MyImageBackground>
   );
