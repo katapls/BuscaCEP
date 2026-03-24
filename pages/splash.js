@@ -10,13 +10,13 @@ export default function Splash({ navigation }) {
   }, []);
 
   return (
-    <ImageBackground source={require('../assets/background.jpg')} style={style.imgBack}>
-      <Image source={require('../assets/imagembossal.png')} style={style.imgLogo} resizeMode="contain" />
+    <ImageBackground source={require('../assets/bgsplash.png')} style={style.imgBack}>
+      <Image source={require('../assets/logo.png')} style={style.imgLogo} resizeMode="contain" />
     </ImageBackground>
   );
 }
 
 const style = StyleSheet.create({
   imgBack: { flex: 1, justifyContent: "center", alignItems: "center" },
-  imgLogo: { width: 300, height: 200 }
+  imgLogo: { width: 500, height: 400 }
 });

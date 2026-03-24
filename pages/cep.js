@@ -1,49 +1,50 @@
 import { useState } from 'react';
-import { Alert, StyleSheet, View as BaseView } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 import axios from 'axios';
-import MyText from '../componentes/Text';
-import MyTextInput from '../componentes/TextInput';
-import MyTouchableOpacity from '../componentes/TouchableOpacity';
-import MyImageBackground from '../componentes/ImageBackground';
-import Container from '../componentes/Container';
 
 export default function Cep({ navigation }) {
-  const [cep, setCep] = useState("");
+  const [cep, setCep] = useState('');
   const [endereco, setEndereco] = useState({});
 
-  async function Buscar() {
+  async function buscar() {
     const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
-    console.log(response.data);
     setEndereco(response.data);
   }
 
   return (
-    <MyImageBackground source={{ uri: 'https://i.pinimg.com/736x/f4/a9/20/f4a920df89961e1c6c2ad5f8e3f3d133.jpg' }}>
-      <BaseView style={styles.overlay}>
-        <MyTouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <MyText style={styles.backText}>←</MyText>
-        </MyTouchableOpacity>
-        <Container>
-          <MyText style={styles.title}>Buscar CEP</MyText>
-          <MyTextInput placeholder="CEP:" value={cep} onChangeText={setCep} keyboardType="numeric" maxLength={8} />
-          <MyTextInput placeholder="Rua:" value={endereco.logradouro} />
-          <MyTextInput placeholder="Bairro:" value={endereco.bairro} />
-          <MyTextInput placeholder="Cidade:" value={endereco.localidade} />
-          <MyTextInput placeholder="Estado:" value={endereco.estado} />
-          <MyTouchableOpacity style={styles.btnSuccess} onPress={Buscar}>
-            <MyText style={styles.btnText}>Buscar Cep</MyText>
-          </MyTouchableOpacity>
-        </Container>
-      </BaseView>
-    </MyImageBackground>
+    <ImageBackground source={require('../assets/cep.png')} style={style.fundo}>
+      <View style={style.sobreposicao}>
+
+        <TouchableOpacity style={style.botaoVoltar} onPress={() => navigation.goBack()}>
+          <Text style={style.textoVoltar}>←</Text>
+        </TouchableOpacity>
+
+        <View style={style.cartao}>
+          <Text style={style.titulo}>Buscar CEP</Text>
+          <TextInput style={style.campo} placeholder="CEP" value={cep} onChangeText={setCep} keyboardType="numeric" maxLength={8} />
+          <TextInput style={style.campo} placeholder="Rua" value={endereco.logradouro} />
+          <TextInput style={style.campo} placeholder="Bairro" value={endereco.bairro} />
+          <TextInput style={style.campo} placeholder="Cidade" value={endereco.localidade} />
+          <TextInput style={style.campo} placeholder="Estado" value={endereco.estado} />
+
+          <TouchableOpacity style={style.botao} onPress={buscar}>
+            <Text style={style.textoBotao}>Buscar CEP</Text>
+          </TouchableOpacity>
+        </View>
+
+      </View>
+    </ImageBackground>
   );
 }
 
-const styles = StyleSheet.create({
-  overlay: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.3)' },
-  title: { fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
-  btnSuccess: { backgroundColor: '#a87d74', padding: 15, borderRadius: 10, alignItems: 'center' },
-  btnText: { color: 'white', fontWeight: 'bold' },
-  backButton: { position: 'absolute', top: 50, left: 20, backgroundColor: 'rgba(255,255,255,0.3)', width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
-  backText: { color: 'white', fontSize: 24, fontWeight: 'bold' }
+const style = StyleSheet.create({
+  fundo:{ flex: 1 },
+  sobreposicao:{ flex: 1, justifyContent: 'center', alignItems: 'center' },
+  botaoVoltar:{ position: 'absolute', top: 50, left: 20, backgroundColor: 'rgba(138, 42, 4, 0.4)', width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
+  textoVoltar:{ color: '#fff', fontSize: 24, fontWeight: 'bold', marginBottom: 15 },
+  cartao:{ width: '85%', backgroundColor: '#fff', borderRadius: 12, padding: 24 },
+  titulo:{ fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
+  campo:{ borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12 },
+  botao:{ backgroundColor: '#479d5b', padding: 15, borderRadius: 10, alignItems: 'center' },
+  textoBotao:{ color: '#fff', fontWeight: 'bold' },
 });

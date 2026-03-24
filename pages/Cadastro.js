@@ -1,45 +1,51 @@
 import { useState } from 'react';
-import { Alert, StyleSheet, View as BaseView } from 'react-native';
-import MyText from '../componentes/Text';
-import MyTextInput from '../componentes/TextInput';
-import MyTouchableOpacity from '../componentes/TouchableOpacity';
-import MyImageBackground from '../componentes/ImageBackground';
-import Container from '../componentes/Container';
+import { Alert, StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 
 export default function Cadastro({ navigation }) {
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
 
   function cadastrar() {
-    Alert.alert("Sucesso", "Conta criada com sucesso!");
+    if (!nome || !email || !pass) {
+      Alert.alert('Ops', 'Tem campos vazios');
+      return;
+    }
+    Alert.alert('Excelsior', 'Conta criada');
   }
 
   return (
-    <MyImageBackground source={{ uri: 'https://i.pinimg.com/736x/f4/a9/20/f4a920df89961e1c6c2ad5f8e3f3d133.jpg' }}>
-      <BaseView style={styles.overlay}>
-        <MyTouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <MyText style={styles.backText}>←</MyText>
-        </MyTouchableOpacity>
-        <Container>
-          <MyText style={styles.title}>Criar Conta</MyText>
-          <MyTextInput placeholder="Nome Completo" value={nome} onChangeText={setNome} />
-          <MyTextInput placeholder="E-mail" keyboardType="email-address" value={email} onChangeText={setEmail} />
-          <MyTextInput placeholder="Senha" secureTextEntry value={pass} onChangeText={setPass} />
-          <MyTouchableOpacity style={styles.btnSuccess} onPress={cadastrar}>
-            <MyText style={styles.btnText}>CADASTRAR</MyText>
-          </MyTouchableOpacity>
-        </Container>
-      </BaseView>
-    </MyImageBackground>
+    <ImageBackground source={require('../assets/cadastro.png')} style={style.fundo}>
+      <View style={style.sobreposicao}>
+
+        <TouchableOpacity style={style.botaoVoltar} onPress={() => navigation.goBack()}>
+          <Text style={style.textoVoltar}>←</Text>
+        </TouchableOpacity>
+
+        <View style={style.cartao}>
+          <Text style={style.titulo}>Criar Conta</Text>
+          <TextInput style={style.campo} placeholder="Nome Completo" value={nome} onChangeText={setNome} />
+          <TextInput style={style.campo} placeholder="E-mail" keyboardType="email-address" value={email} onChangeText={setEmail} />
+          <TextInput style={style.campo} placeholder="Senha" secureTextEntry value={pass} onChangeText={setPass} />
+
+          <TouchableOpacity style={style.botao} onPress={cadastrar}>
+            <Text style={style.textoBotao}>CADASTRAR</Text>
+          </TouchableOpacity>
+        </View>
+
+      </View>
+    </ImageBackground>
   );
 }
 
-const styles = StyleSheet.create({
-  overlay: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.3)' },
-  title: { fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
-  btnSuccess: { backgroundColor: '#a87d74', padding: 15, borderRadius: 10, alignItems: 'center' },
-  btnText: { color: 'white', fontWeight: 'bold' },
-  backButton: { position: 'absolute', top: 50, left: 20, backgroundColor: 'rgba(255,255,255,0.3)', width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
-  backText: { color: 'white', fontSize: 24, fontWeight: 'bold' }
+const style = StyleSheet.create({
+  fundo:{ flex: 1 },
+  sobreposicao:{ flex: 1, justifyContent: 'center', alignItems: 'center' },
+  botaoVoltar:{ position: 'absolute', top: 50, left: 20, backgroundColor: 'rgba(138, 42, 4, 0.4)', width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
+  textoVoltar:{ color: '#fff', fontSize: 24, fontWeight: 'bold', marginBottom: 15 },
+  cartao:{ width: '85%', backgroundColor: '#fff', borderRadius: 12, padding: 24 },
+  titulo:{ fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
+  campo:{ borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12 },
+  botao:{ backgroundColor: '#74a882', padding: 15, borderRadius: 10, alignItems: 'center' },
+  textoBotao:{ color: '#fff', fontWeight: 'bold' },
 });
