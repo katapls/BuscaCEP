@@ -1,6 +1,15 @@
 import React from 'react';
 import { useFonts } from 'expo-font';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import Splash from './pages/splash';
 import Home from './pages/Home';
+import Login from './pages/Login';
+import Cadastro from './pages/Cadastro';
+import Cep from './pages/cep';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -9,5 +18,15 @@ export default function App() {
 
   if (!fontsLoaded) return null;
 
-  return <Home />;
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Splash" component={Splash} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Cadastro" component={Cadastro} />
+        <Stack.Screen name="Cep" component={Cep} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }

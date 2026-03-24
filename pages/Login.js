@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { Alert } from 'react-native';
-import { StyleSheet, View as BaseView } from 'react-native';
+import { Alert, StyleSheet, View as BaseView } from 'react-native';
 import MyText from '../componentes/Text';
 import MyTextInput from '../componentes/TextInput';
 import MyTouchableOpacity from '../componentes/TouchableOpacity';
 import MyImageBackground from '../componentes/ImageBackground';
 import Container from '../componentes/Container';
 
-export default function Login({ onBack, navigation }) {  
+export default function Login({ navigation }) {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
 
@@ -16,29 +15,20 @@ export default function Login({ onBack, navigation }) {
       Alert.alert("Excelsior", "Usuário logado!");
     } else {
       Alert.alert("ERRO", "Usuário ou senha incorretos!");
+      navigation.navigate("Cep");
     }
   }
 
   return (
     <MyImageBackground source={{ uri: 'https://img.freepik.com/premium-photo/hyper-realistic-strawberry-wallpaper-with-pink-anime-aesthetic_886588-33728.jpg?w=360' }}>
       <BaseView style={styles.overlay}>
-        <MyTouchableOpacity style={styles.backButton} onPress={onBack}>
+        <MyTouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <MyText style={styles.backText}>←</MyText>
         </MyTouchableOpacity>
         <Container>
           <MyText style={styles.title}>Login</MyText>
-          <MyTextInput
-            placeholder="Nome"
-            keyboardType="Nome"
-            value={user}
-            onChangeText={setUser}
-          />
-          <MyTextInput
-            placeholder="Senha"
-            secureTextEntry
-            value={pass}
-            onChangeText={setPass}
-          />
+          <MyTextInput placeholder="Nome" value={user} onChangeText={setUser} />
+          <MyTextInput placeholder="Senha" secureTextEntry value={pass} onChangeText={setPass} />
           <MyTouchableOpacity style={styles.btnPrimary} onPress={logar}>
             <MyText style={styles.btnText}>ENTRAR</MyText>
           </MyTouchableOpacity>

@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { Alert, StyleSheet, View as BaseView } from 'react-native';
+import axios from 'axios';
 import MyText from '../componentes/Text';
 import MyTextInput from '../componentes/TextInput';
 import MyTouchableOpacity from '../componentes/TouchableOpacity';
 import MyImageBackground from '../componentes/ImageBackground';
 import Container from '../componentes/Container';
 
-export default function Cadastro({ navigation }) {
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+export default function Cep({ navigation }) {
+  const [cep, setCep] = useState("");
+  const [endereco, setEndereco] = useState({});
 
-  function cadastrar() {
-    Alert.alert("Sucesso", "Conta criada com sucesso!");
+  async function Buscar() {
+    const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+    console.log(response.data);
+    setEndereco(response.data);
   }
 
   return (
@@ -22,12 +24,14 @@ export default function Cadastro({ navigation }) {
           <MyText style={styles.backText}>←</MyText>
         </MyTouchableOpacity>
         <Container>
-          <MyText style={styles.title}>Criar Conta</MyText>
-          <MyTextInput placeholder="Nome Completo" value={nome} onChangeText={setNome} />
-          <MyTextInput placeholder="E-mail" keyboardType="email-address" value={email} onChangeText={setEmail} />
-          <MyTextInput placeholder="Senha" secureTextEntry value={pass} onChangeText={setPass} />
-          <MyTouchableOpacity style={styles.btnSuccess} onPress={cadastrar}>
-            <MyText style={styles.btnText}>CADASTRAR</MyText>
+          <MyText style={styles.title}>Buscar CEP</MyText>
+          <MyTextInput placeholder="CEP:" value={cep} onChangeText={setCep} keyboardType="numeric" maxLength={8} />
+          <MyTextInput placeholder="Rua:" value={endereco.logradouro} />
+          <MyTextInput placeholder="Bairro:" value={endereco.bairro} />
+          <MyTextInput placeholder="Cidade:" value={endereco.localidade} />
+          <MyTextInput placeholder="Estado:" value={endereco.estado} />
+          <MyTouchableOpacity style={styles.btnSuccess} onPress={Buscar}>
+            <MyText style={styles.btnText}>Buscar Cep</MyText>
           </MyTouchableOpacity>
         </Container>
       </BaseView>
