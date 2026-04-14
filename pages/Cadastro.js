@@ -1,61 +1,46 @@
 import { useState } from 'react';
-import { Alert, StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
+import { Alert, StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 
-export default function Cadastro({ navigation }) {
-  const [nome, setNome] = useState('');
+export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [empresa, setEmpresa] = useState('');
 
-  function mascaraTelefone(valor) {
-    return valor
-      .replace(/\D/g, '')
-      .replace(/^(\d{2})(\d)/, '($1) $2')
-      .replace(/(\d{5})(\d{1,4})$/, '$1-$2')
-      .slice(0, 15);
-  }
-
-  async function cadastrar() {
-    if (!nome || !email || !senha || !telefone || !empresa) {
-      Alert.alert('Erro', 'Tem campos vazios');
+  async function logar() {
+    if (email === '' || senha === '') {
+      Alert.alert('Erro', 'Preencha todos os campos');
       return;
     }
 
-    const values = {
-      nome:     nome,
-      email:    email,
-      senha:    senha,
-      telefone: telefone.replace(/\D/g, ''), // envia só números
-      empresa:  empresa,
-    };
-
     try {
-      const response = await axios.post('http://10.0.2.2:8000/api/Cadastro_usuario', values);
-      console.log(response.data.usuario);
-      Alert.alert('Sucesso', 'Conta criada com sucesso!');
-      navigation.navigate('Login');
+      const response = await axios.post('http://10.0.2.2:8000/api/Login', {
+        email: email,
+        senha: senha,
+      });
+
+      if (response.data.token) {
+        await AsyncStorage.setItem('token', response.data.token);
+        await AsyncStorage.setItem('user_id', String(response.data.user_id));
+        Alert.alert('Excelsior', 'Usuário logado!');
+        navigation.navigate('Cep');
+      } else {
+        Alert.alert('Erro', 'Token não recebido');
+      }
     } catch (error) {
-      Alert.alert('Erro', 'Erro ao cadastrar');
+      Alert.alert('ERRO', error.response?.data?.data || 'Usuário ou senha incorretos!');
       console.error(error);
     }
   }
 
   return (
-    <ImageBackground source={require('../assets/cadastro.png')} style={style.fundo}>
+    <ImageBackground source={require('../assets/login.png')} style={style.fundo}>
       <View style={style.sobreposicao}>
         <TouchableOpacity style={style.botaoVoltar} onPress={() => navigation.goBack()}>
           <Text style={style.textoVoltar}>←</Text>
         </TouchableOpacity>
         <View style={style.cartao}>
-          <Text style={style.titulo}>Criar Conta</Text>
-          <TextInput
-            style={style.campo}
-            placeholder="Nome Completo"
-            value={nome}
-            onChangeText={setNome}
-          />
+          <Text style={style.titulo}>Login</Text>
           <TextInput
             style={style.campo}
             placeholder="E-mail"
@@ -70,22 +55,8 @@ export default function Cadastro({ navigation }) {
             value={senha}
             onChangeText={setSenha}
           />
-          <TextInput
-            style={style.campo}
-            placeholder="Telefone"
-            keyboardType="phone-pad"
-            value={telefone}
-            onChangeText={(text) => setTelefone(mascaraTelefone(text))}
-            maxLength={15}
-          />
-          <TextInput
-            style={style.campo}
-            placeholder="Empresa"
-            value={empresa}
-            onChangeText={setEmpresa}
-          />
-          <TouchableOpacity style={style.botao} onPress={cadastrar}>
-            <Text style={style.textoBotao}>CADASTRAR</Text>
+          <TouchableOpacity style={style.botao} onPress={logar}>
+            <Text style={style.textoBotao}>ENTRAR</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -100,7 +71,7 @@ const style = StyleSheet.create({
   textoVoltar:  { color: '#ffffff', fontSize: 24, fontWeight: 'bold', marginBottom: 15 },
   cartao:       { width: '85%', backgroundColor: '#ffffff', borderRadius: 12, padding: 24 },
   titulo:       { fontSize: 30, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
-  campo:        { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12 },
-  botao:        { backgroundColor: '#74a882', padding: 15, borderRadius: 10, alignItems: 'center' },
-  textoBotao:   { color: '#ffffff', fontWeight: 'bold' },
+  campo:        { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12},
+  botao: { backgroundColor: '#e4ec4c', padding: 15, borderRadius: 10, alignItems: 'center' },
+  textoBotao: { color: '#000', fontWeight: 'bold' },
 });
